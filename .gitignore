@@ -1,0 +1,12 @@
+# Environment
+.env
+venv/
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+
+# Temp files
+temp_pdfs/
+.claude-dev-helper/

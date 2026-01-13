@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: boamp-scraper
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: MONGO_URI
+        sync: false
+      - key: MONGO_DB
+        value: tenders_db
+      - key: MONGO_COLLECTION
+        value: tenders_boamp
+      - key: API_EMAIL
+        sync: false
+      - key: API_PASSWORD
+        sync: false
