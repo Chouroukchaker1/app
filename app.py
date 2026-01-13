@@ -263,9 +263,10 @@ class BOAMPScraper:
         self.is_processing = True
         new_count = 0
         offset = 0
-        batch_size = 100
+        batch_size = 50
         total_fetched = 0
-        max_pages = 50
+        max_pages = 5
+        max_offers = int(limit) if limit else 100
 
         try:
             start_date_obj = datetime.strptime(start_date, '%Y-%m-%d').date() if start_date else None
@@ -384,8 +385,8 @@ class BOAMPScraper:
                     logger.info("🛑 Arrêt: offres hors plage de dates")
                     break
 
-                if limit and new_count >= limit:
-                    logger.info(f"✅ Limite atteinte ({new_count}/{limit})")
+                if new_count >= max_offers:
+                    logger.info(f"✅ Limite atteinte ({new_count}/{max_offers})")
                     break
 
                 offset += batch_size
