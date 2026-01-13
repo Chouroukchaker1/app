@@ -70,7 +70,13 @@ logger = logging.getLogger(__name__)
 
 def get_mongo_client():
     """Retourne un client MongoDB"""
-    return MongoClient(MONGO_URI)
+    return MongoClient(
+        MONGO_URI,
+        tls=True,
+        tlsAllowInvalidCertificates=True,
+        serverSelectionTimeoutMS=30000,
+        connectTimeoutMS=30000
+    )
 
 def get_mongo_collection():
     """Retourne la collection MongoDB"""
