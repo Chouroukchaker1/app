@@ -4,8 +4,9 @@ import json
 import logging
 import re
 from datetime import datetime, timedelta
-from flask import Flask, jsonify, request, render_template, send_from_directory
+from flask import Flask, jsonify, request, render_template, send_from_directory, session, redirect, url_for
 from flask_cors import CORS
+from functools import wraps
 import requests
 import pymongo
 from pymongo import MongoClient, ASCENDING, DESCENDING
@@ -827,10 +828,23 @@ def send_tender_to_api(tender_data):
 # FLASK APP - INTERFACE WEB
 # ================================================
 
-app = Flask(__name__, 
+app = Flask(__name__,
            static_folder='static',
            template_folder='templates')
+app.secret_key = os.environ.get('SECRET_KEY', 'boamp-secret-key-2024')
 CORS(app, origins=["*"])
+
+# Configuration utilisateur
+APP_USERNAME = "raouf fathalah"
+APP_PASSWORD = "admin123"
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'logged_in' not in session:
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 scraper = BOAMPScraper()
 
@@ -1930,20 +1944,44 @@ code {
 # ROUTES FLASK
 # ================================================
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    """Page de connexion"""
+    if request.method == 'POST':
+        username = request.form.get('username', '')
+        password = request.form.get('password', '')
+
+        if username == APP_USERNAME and password == APP_PASSWORD:
+            session['logged_in'] = True
+            session['username'] = username
+            return redirect(url_for('index'))
+        else:
+            return render_template('login.html', error="Nom d'utilisateur ou mot de passe incorrect")
+
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    """Déconnexion"""
+    session.clear()
+    return redirect(url_for('login'))
+
 @app.route('/')
+@login_required
 def index():
     """Page d'accueil - Interface web"""
     # Dates par défaut (30 derniers jours)
     end_date = datetime.now().strftime('%Y-%m-%d')
     start_date = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')
-    
+
     # Créer les fichiers d'interface s'ils n'existent pas
     if not os.path.exists('templates/index.html'):
         create_interface_files()
-    
-    return render_template('index.html', 
+
+    return render_template('index.html',
                          start_date=start_date,
                          end_date=end_date,
+                         username=session.get('username', ''),
                          mongo_uri=MONGO_URI)
 
 @app.route('/api/pending', methods=['GET'])

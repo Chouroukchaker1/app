@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BOAMP Scraper - Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -14,377 +14,406 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', sans-serif;
+            background: #f8f9fa;
             min-height: 100vh;
-            color: #333;
+            color: #1a1a1a;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px 40px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .header-content {
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            padding: 16px 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .logo {
+            width: 40px;
+            height: 40px;
+            background: #dc3545;
+            border-radius: 10px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            justify-content: center;
         }
 
         .logo i {
-            font-size: 2.5rem;
-            color: #667eea;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: white;
+            font-size: 18px;
         }
 
-        .logo h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #2d3748;
+        .header-title h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
         }
 
-        .logo .subtitle {
-            font-size: 0.9rem;
-            color: #718096;
-            font-weight: 400;
+        .header-title span {
+            font-size: 13px;
+            color: #6c757d;
         }
 
-        .stats-container {
+        .header-right {
             display: flex;
+            align-items: center;
             gap: 20px;
-            flex-wrap: wrap;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #495057;
+            font-size: 14px;
+        }
+
+        .user-info i {
+            color: #dc3545;
+        }
+
+        .btn-logout {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            color: #495057;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-logout:hover {
+            background: #f8f9fa;
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
         }
 
         .stat-card {
             background: white;
-            padding: 20px 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            min-width: 150px;
-            transition: transform 0.3s ease;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #e9ecef;
         }
 
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-card.pending {
-            border-left: 4px solid #f6ad55;
-        }
-
-        .stat-card.validated {
-            border-left: 4px solid #68d391;
-        }
-
-        .stat-card.total {
-            border-left: 4px solid #667eea;
-        }
-
-        .stat-card.active {
-            border-left: 4px solid #ed64a6;
-        }
-
-        .stat-number {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: #718096;
+        .stat-card .stat-label {
+            font-size: 13px;
+            color: #6c757d;
+            margin-bottom: 8px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
-        .controls {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        .stat-card .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a1a1a;
         }
 
-        .controls h2 {
-            font-size: 1.5rem;
-            margin-bottom: 25px;
-            color: #2d3748;
+        .stat-card.pending .stat-value { color: #f59e0b; }
+        .stat-card.validated .stat-value { color: #10b981; }
+        .stat-card.active .stat-value { color: #dc3545; }
+        .stat-card.total .stat-value { color: #1a1a1a; }
+
+        /* Controls Section */
+        .controls-section {
+            background: white;
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 32px;
+            border: 1px solid #e9ecef;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 24px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .controls h2 i {
-            color: #667eea;
+        .section-title i {
+            color: #dc3545;
         }
 
-        .date-filters {
+        .controls-form {
             display: flex;
             gap: 20px;
+            align-items: flex-end;
             flex-wrap: wrap;
-            margin-bottom: 25px;
         }
 
-        .date-group {
+        .form-group {
             flex: 1;
-            min-width: 200px;
+            min-width: 180px;
         }
 
-        .date-group label {
+        .form-group label {
             display: block;
-            margin-bottom: 8px;
+            font-size: 13px;
             font-weight: 500;
-            color: #4a5568;
+            color: #495057;
+            margin-bottom: 8px;
         }
 
-        .date-group input {
+        .form-group input {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
+            padding: 12px 14px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s;
+            background: #f8f9fa;
         }
 
-        .date-group input:focus {
+        .form-group input:focus {
             outline: none;
-            border-color: #667eea;
-        }
-
-        .actions {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
+            border-color: #dc3545;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
         }
 
         .btn {
-            padding: 12px 30px;
+            padding: 12px 24px;
             border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
+            transition: all 0.2s;
+            display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #dc3545;
             color: white;
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            background: #c82333;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #495057;
+            border: 1px solid #e0e0e0;
+        }
+
+        .btn-secondary:hover {
+            background: #f8f9fa;
+            border-color: #ced4da;
         }
 
         .btn-danger {
-            background: linear-gradient(135deg, #f56565 0%, #ed64a6 100%);
-            color: white;
+            background: white;
+            color: #dc3545;
+            border: 1px solid #dc3545;
         }
 
         .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(245, 101, 101, 0.4);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            background: #dc3545;
             color: white;
-        }
-
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
         }
 
         .btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none !important;
-            box-shadow: none !important;
         }
 
+        .actions-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        /* Status Indicator */
         .status-indicator {
-            padding: 10px 20px;
-            border-radius: 50px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
             font-weight: 500;
             display: inline-flex;
             align-items: center;
             gap: 8px;
         }
 
-        .status-processing {
-            background: rgba(246, 173, 85, 0.1);
-            color: #c05621;
-            border: 1px solid rgba(246, 173, 85, 0.3);
-        }
-
         .status-idle {
-            background: rgba(102, 126, 234, 0.1);
-            color: #667eea;
-            border: 1px solid rgba(102, 126, 234, 0.3);
+            background: #f0fdf4;
+            color: #166534;
         }
 
-        .tenders-table-container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
+        .status-processing {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* Table Section */
+        .table-section {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            overflow: hidden;
         }
 
         .table-header {
+            padding: 20px 28px;
+            border-bottom: 1px solid #e9ecef;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-            gap: 15px;
         }
 
         .table-header h2 {
-            font-size: 1.5rem;
-            color: #2d3748;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
         .table-header h2 i {
-            color: #667eea;
+            color: #dc3545;
         }
 
         .pagination {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
         }
 
         .pagination-btn {
-            padding: 8px 15px;
-            border: 2px solid #e2e8f0;
+            padding: 8px 12px;
+            border: 1px solid #e0e0e0;
             background: white;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
+            color: #495057;
         }
 
         .pagination-btn:hover:not(:disabled) {
-            border-color: #667eea;
-            color: #667eea;
+            border-color: #dc3545;
+            color: #dc3545;
         }
 
         .pagination-btn:disabled {
-            opacity: 0.5;
+            opacity: 0.4;
             cursor: not-allowed;
         }
 
         .page-info {
-            font-size: 0.9rem;
-            color: #718096;
+            font-size: 13px;
+            color: #6c757d;
+            padding: 0 12px;
         }
 
+        /* Table */
         table {
             width: 100%;
             border-collapse: collapse;
         }
 
         thead {
-            background: #f7fafc;
-            border-radius: 10px;
+            background: #f8f9fa;
         }
 
         th {
-            padding: 15px;
+            padding: 14px 20px;
             text-align: left;
+            font-size: 12px;
             font-weight: 600;
-            color: #4a5568;
-            border-bottom: 2px solid #e2e8f0;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #e9ecef;
         }
 
         td {
-            padding: 15px;
-            border-bottom: 1px solid #e2e8f0;
+            padding: 16px 20px;
+            font-size: 14px;
+            border-bottom: 1px solid #f1f3f4;
+            color: #495057;
         }
 
         tr:hover {
-            background: #f7fafc;
+            background: #f8f9fa;
         }
 
         .ref-cell {
-            font-family: 'Courier New', monospace;
+            font-family: 'SF Mono', 'Monaco', monospace;
             font-weight: 600;
-            color: #2d3748;
+            color: #1a1a1a;
+            font-size: 13px;
         }
 
         .desc-cell {
-            max-width: 300px;
+            max-width: 280px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
         .promoter-cell {
-            max-width: 200px;
+            max-width: 180px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
-        .date-cell {
-            white-space: nowrap;
-        }
-
         .status-badge {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
             font-weight: 500;
         }
 
         .status-pending {
-            background: rgba(246, 173, 85, 0.1);
-            color: #c05621;
+            background: #fef3c7;
+            color: #92400e;
         }
 
         .status-validated {
-            background: rgba(104, 211, 145, 0.1);
-            color: #276749;
-        }
-
-        .status-active {
-            background: rgba(237, 100, 166, 0.1);
-            color: #b83280;
+            background: #d1fae5;
+            color: #065f46;
         }
 
         .actions-cell {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
         .action-btn {
@@ -392,48 +421,75 @@
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 12px;
             font-weight: 500;
-            transition: all 0.3s ease;
-            display: flex;
+            transition: all 0.2s;
+            display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
         .btn-validate {
-            background: #48bb78;
-            color: white;
+            background: #d1fae5;
+            color: #065f46;
         }
 
         .btn-validate:hover {
-            background: #38a169;
-        }
-
-        .btn-delete {
-            background: #f56565;
+            background: #10b981;
             color: white;
-        }
-
-        .btn-delete:hover {
-            background: #e53e3e;
         }
 
         .btn-view {
-            background: #4299e1;
-            color: white;
+            background: #e0e7ff;
+            color: #3730a3;
         }
 
         .btn-view:hover {
-            background: #3182ce;
+            background: #6366f1;
+            color: white;
         }
 
+        .btn-delete {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .btn-delete:hover {
+            background: #dc3545;
+            color: white;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #dee2e6;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-size: 16px;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+        }
+
+        /* Loading Overlay */
         .loading-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.5);
             display: none;
             justify-content: center;
             align-items: center;
@@ -443,18 +499,18 @@
         .loading-content {
             background: white;
             padding: 40px;
-            border-radius: 20px;
+            border-radius: 16px;
             text-align: center;
-            max-width: 400px;
+            max-width: 360px;
         }
 
         .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #e2e8f0;
-            border-top: 4px solid #667eea;
+            width: 48px;
+            height: 48px;
+            border: 3px solid #e9ecef;
+            border-top: 3px solid #dc3545;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
             margin: 0 auto 20px;
         }
 
@@ -463,121 +519,150 @@
             100% { transform: rotate(360deg); }
         }
 
+        .loading-content h3 {
+            font-size: 16px;
+            color: #1a1a1a;
+        }
+
+        /* Notification */
         .notification {
             position: fixed;
             top: 20px;
             right: 20px;
-            padding: 15px 25px;
+            padding: 16px 24px;
             border-radius: 10px;
             color: white;
+            font-size: 14px;
             font-weight: 500;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             z-index: 1001;
-            transform: translateX(500px);
-            transition: transform 0.5s ease;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
         }
 
         .notification.show {
             transform: translateX(0);
         }
 
-        .notification.success {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-        }
+        .notification.success { background: #10b981; }
+        .notification.error { background: #dc3545; }
+        .notification.info { background: #6366f1; }
 
-        .notification.error {
-            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
-        }
-
-        .notification.info {
-            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
-        }
-
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9rem;
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
+            .header {
+                padding: 12px 16px;
+            }
+
             .container {
-                padding: 10px;
+                padding: 16px;
             }
-            
-            header, .controls, .tenders-table-container {
-                padding: 20px;
+
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
-            
-            .stat-card {
-                min-width: 120px;
-                padding: 15px 20px;
+
+            .controls-form {
+                flex-direction: column;
             }
-            
-            .stat-number {
-                font-size: 1.8rem;
+
+            .form-group {
+                width: 100%;
             }
-            
+
             table {
                 display: block;
                 overflow-x: auto;
             }
-            
+
             .actions-cell {
                 flex-direction: column;
-                gap: 5px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="header-content">
-                <div class="logo">
-                    <i class="fas fa-bullhorn"></i>
-                    <div>
-                        <h1>BOAMP Official Scraper</h1>
-                        <div class="subtitle">Scraping d'offres BOAMP vers appeloffres.net</div>
-                    </div>
-                </div>
-                <div class="stats-container" id="statsContainer">
-                    <!-- Les stats seront chargées ici -->
-                </div>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <i class="fas fa-bullhorn"></i>
             </div>
-        </header>
+            <div class="header-title">
+                <h1>BOAMP Scraper</h1>
+                <span>Dashboard</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="user-info">
+                <i class="fas fa-user-circle"></i>
+                <span>{{ username }}</span>
+            </div>
+            <a href="/logout" class="btn-logout">
+                <i class="fas fa-sign-out-alt"></i> Deconnexion
+            </a>
+        </div>
+    </header>
 
-        <div class="controls">
-            <h2><i class="fas fa-sliders-h"></i> Contrôles de Scraping</h2>
-            
-            <div class="date-filters">
-                <div class="date-group">
-                    <label for="startDate"><i class="far fa-calendar-alt"></i> Date de début</label>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Stats -->
+        <div class="stats-grid" id="statsContainer">
+            <div class="stat-card pending">
+                <div class="stat-label">En attente</div>
+                <div class="stat-value">0</div>
+            </div>
+            <div class="stat-card validated">
+                <div class="stat-label">Validees</div>
+                <div class="stat-value">0</div>
+            </div>
+            <div class="stat-card active">
+                <div class="stat-label">Actives</div>
+                <div class="stat-value">0</div>
+            </div>
+            <div class="stat-card total">
+                <div class="stat-label">Total</div>
+                <div class="stat-value">0</div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls-section">
+            <h2 class="section-title">
+                <i class="fas fa-sliders-h"></i>
+                Controles de Scraping
+            </h2>
+
+            <div class="controls-form">
+                <div class="form-group">
+                    <label for="startDate">Date de debut</label>
                     <input type="date" id="startDate" value="{{ start_date }}">
                 </div>
-                <div class="date-group">
-                    <label for="endDate"><i class="far fa-calendar-alt"></i> Date de fin</label>
+                <div class="form-group">
+                    <label for="endDate">Date de fin</label>
                     <input type="date" id="endDate" value="{{ end_date }}">
                 </div>
-                <div class="date-group">
-                    <label for="limit"><i class="fas fa-filter"></i> Limite d'offres (optionnel)</label>
-                    <input type="number" id="limit" placeholder="Toutes (vide)" min="1">
+                <div class="form-group">
+                    <label for="limit">Limite d'offres</label>
+                    <input type="number" id="limit" placeholder="100" min="1" value="100">
                 </div>
-            </div>
-
-            <div class="actions">
                 <button class="btn btn-primary" onclick="startScraping()" id="scrapeBtn">
                     <i class="fas fa-play"></i> Lancer le scraping
                 </button>
-                
                 <div id="statusIndicator" class="status-indicator status-idle">
-                    <i class="fas fa-check-circle"></i> Prêt
+                    <i class="fas fa-check-circle"></i> Pret
                 </div>
             </div>
 
-            <div style="margin-top: 20px; display: flex; gap: 15px;">
-                <button class="btn btn-success" onclick="validateAll()" id="validateAllBtn">
-                    <i class="fas fa-check-double"></i> Valider toutes les offres
+            <div class="actions-row">
+                <button class="btn btn-secondary" onclick="validateAll()" id="validateAllBtn">
+                    <i class="fas fa-check-double"></i> Valider toutes
                 </button>
                 <button class="btn btn-danger" onclick="deleteAll()" id="deleteAllBtn">
                     <i class="fas fa-trash-alt"></i> Supprimer toutes
@@ -585,46 +670,40 @@
             </div>
         </div>
 
-        <div class="tenders-table-container">
+        <!-- Table -->
+        <div class="table-section">
             <div class="table-header">
-                <h2><i class="fas fa-list-alt"></i> Offres en attente</h2>
-                <div class="pagination" id="pagination">
-                    <!-- La pagination sera générée ici -->
-                </div>
+                <h2>
+                    <i class="fas fa-list-alt"></i>
+                    Offres en attente
+                </h2>
+                <div class="pagination" id="pagination"></div>
             </div>
 
-            <div class="table-responsive">
-                <table id="tendersTable">
-                    <thead>
-                        <tr>
-                            <th>Référence</th>
-                            <th>Description</th>
-                            <th>Promoteur</th>
-                            <th>Date publication</th>
-                            <th>Date expiration</th>
-                            <th>Secteur</th>
-                            <th>Statut</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tendersTableBody">
-                        <!-- Les données seront chargées ici -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="footer">
-            <p>BOAMP Scraper v1.0 - © 2024 - Interface de gestion des offres BOAMP</p>
-            <p>Connecté à MongoDB: {{ mongo_uri }}</p>
+            <table id="tendersTable">
+                <thead>
+                    <tr>
+                        <th>Reference</th>
+                        <th>Description</th>
+                        <th>Promoteur</th>
+                        <th>Publication</th>
+                        <th>Expiration</th>
+                        <th>Secteur</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tendersTableBody">
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <!-- Overlay de chargement -->
+    <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-content">
             <div class="spinner"></div>
-            <h3 id="loadingText">Chargement en cours...</h3>
+            <h3 id="loadingText">Chargement...</h3>
         </div>
     </div>
 
@@ -636,8 +715,7 @@
         const limit = 10;
         let totalPages = 1;
 
-        // Afficher/Cacher le loading
-        function showLoading(text = 'Chargement en cours...') {
+        function showLoading(text = 'Chargement...') {
             document.getElementById('loadingText').textContent = text;
             document.getElementById('loadingOverlay').style.display = 'flex';
         }
@@ -646,362 +724,231 @@
             document.getElementById('loadingOverlay').style.display = 'none';
         }
 
-        // Afficher une notification
-        function showNotification(message, type = 'info', duration = 5000) {
+        function showNotification(message, type = 'info', duration = 4000) {
             const notification = document.getElementById('notification');
             notification.textContent = message;
-            notification.className = `notification ${type} show`;
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, duration);
+            notification.className = 'notification ' + type + ' show';
+            setTimeout(() => notification.classList.remove('show'), duration);
         }
 
-        // Charger les statistiques
         async function loadStats() {
             try {
                 const response = await fetch('/api/stats');
                 const data = await response.json();
-                
                 if (data.success) {
                     const stats = data.stats;
-                    const statsContainer = document.getElementById('statsContainer');
-                    
-                    statsContainer.innerHTML = `
-                        <div class="stat-card pending">
-                            <div class="stat-number">${stats.pending}</div>
-                            <div class="stat-label">En attente</div>
-                        </div>
-                        <div class="stat-card validated">
-                            <div class="stat-number">${stats.validated}</div>
-                            <div class="stat-label">Validées</div>
-                        </div>
-                        <div class="stat-card active">
-                            <div class="stat-number">${stats.active}</div>
-                            <div class="stat-label">Actives</div>
-                        </div>
-                        <div class="stat-card total">
-                            <div class="stat-number">${stats.total}</div>
-                            <div class="stat-label">Total</div>
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                console.error('Erreur chargement stats:', error);
-            }
-        }
-
-        // Charger les offres avec pagination
-        async function loadTenders(page = 1) {
-            showLoading('Chargement des offres...');
-            currentPage = page;
-            
-            try {
-                const response = await fetch(`/api/pending?page=${page}&limit=${limit}`);
-                const data = await response.json();
-                
-                if (data.success) {
-                    const pendingData = data.pending;
-                    totalPages = pendingData.totalPages;
-                    
-                    // Mettre à jour le tableau
-                    const tbody = document.getElementById('tendersTableBody');
-                    tbody.innerHTML = '';
-                    
-                    if (pendingData.offres && pendingData.offres.length > 0) {
-                        pendingData.offres.forEach(tender => {
-                            const row = document.createElement('tr');
-                            
-                            // Formater les dates
-                            const pubDate = tender.publicationDate ? new Date(tender.publicationDate).toLocaleDateString('fr-FR') : '-';
-                            const expDate = tender.expirationDate ? new Date(tender.expirationDate).toLocaleDateString('fr-FR') : '-';
-                            
-                            // Déterminer le statut
-                            let statusClass = 'status-pending';
-                            let statusText = 'En attente';
-                            
-                            if (tender.status === 'validated') {
-                                statusClass = 'status-validated';
-                                statusText = 'Validée';
-                            } else if (tender.status === 'active') {
-                                statusClass = 'status-active';
-                                statusText = 'Active';
-                            }
-                            
-                            row.innerHTML = `
-                                <td class="ref-cell">${tender.reference || '-'}</td>
-                                <td class="desc-cell" title="${tender.description || ''}">${tender.description || 'Pas de description'}</td>
-                                <td class="promoter-cell" title="${tender.promoter || ''}">${tender.promoter || 'Non spécifié'}</td>
-                                <td class="date-cell">${pubDate}</td>
-                                <td class="date-cell">${expDate}</td>
-                                <td>${tender.business_sector || tender.activity || '-'}</td>
-                                <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                                <td class="actions-cell">
-                                    <button class="action-btn btn-validate" onclick="validateOffer('${tender.reference}')" ${tender.status === 'validated' ? 'disabled' : ''}>
-                                        <i class="fas fa-check"></i> Valider
-                                    </button>
-                                    <button class="action-btn btn-view" onclick="viewOffer('${tender.external_url || tender.url_source}')">
-                                        <i class="fas fa-external-link-alt"></i> Voir
-                                    </button>
-                                    <button class="action-btn btn-delete" onclick="deleteOffer('${tender.reference}')">
-                                        <i class="fas fa-trash"></i> Suppr
-                                    </button>
-                                </td>
-                            `;
-                            
-                            tbody.appendChild(row);
-                        });
-                    } else {
-                        tbody.innerHTML = `
-                            <tr>
-                                <td colspan="8" style="text-align: center; padding: 40px;">
-                                    <i class="fas fa-inbox" style="font-size: 3rem; color: #cbd5e0; margin-bottom: 15px;"></i>
-                                    <h3 style="color: #a0aec0;">Aucune offre en attente</h3>
-                                    <p>Utilisez le bouton "Lancer le scraping" pour récupérer des offres</p>
-                                </td>
-                            </tr>
-                        `;
-                    }
-                    
-                    // Mettre à jour la pagination
-                    updatePagination();
-                } else {
-                    showNotification('Erreur lors du chargement des offres: ' + data.error, 'error');
+                    document.getElementById('statsContainer').innerHTML =
+                        '<div class="stat-card pending"><div class="stat-label">En attente</div><div class="stat-value">' + stats.pending + '</div></div>' +
+                        '<div class="stat-card validated"><div class="stat-label">Validees</div><div class="stat-value">' + stats.validated + '</div></div>' +
+                        '<div class="stat-card active"><div class="stat-label">Actives</div><div class="stat-value">' + stats.active + '</div></div>' +
+                        '<div class="stat-card total"><div class="stat-label">Total</div><div class="stat-value">' + stats.total + '</div></div>';
                 }
             } catch (error) {
                 console.error('Erreur:', error);
-                showNotification('Erreur de connexion au serveur', 'error');
+            }
+        }
+
+        async function loadTenders(page = 1) {
+            showLoading('Chargement des offres...');
+            currentPage = page;
+            try {
+                const response = await fetch('/api/pending?page=' + page + '&limit=' + limit);
+                const data = await response.json();
+                if (data.success) {
+                    const pendingData = data.pending;
+                    totalPages = pendingData.totalPages || 1;
+                    const tbody = document.getElementById('tendersTableBody');
+                    tbody.innerHTML = '';
+
+                    if (pendingData.offres && pendingData.offres.length > 0) {
+                        pendingData.offres.forEach(tender => {
+                            const row = document.createElement('tr');
+                            const pubDate = tender.publicationDate ? new Date(tender.publicationDate).toLocaleDateString('fr-FR') : '-';
+                            const expDate = tender.expirationDate ? new Date(tender.expirationDate).toLocaleDateString('fr-FR') : '-';
+                            let statusClass = 'status-pending';
+                            let statusText = 'En attente';
+                            if (tender.status === 'validated') {
+                                statusClass = 'status-validated';
+                                statusText = 'Validee';
+                            }
+
+                            row.innerHTML =
+                                '<td class="ref-cell">' + (tender.reference || '-') + '</td>' +
+                                '<td class="desc-cell" title="' + (tender.description || '') + '">' + (tender.description || '-') + '</td>' +
+                                '<td class="promoter-cell" title="' + (tender.promoter || '') + '">' + (tender.promoter || '-') + '</td>' +
+                                '<td>' + pubDate + '</td>' +
+                                '<td>' + expDate + '</td>' +
+                                '<td>' + (tender.business_sector || '-') + '</td>' +
+                                '<td><span class="status-badge ' + statusClass + '">' + statusText + '</span></td>' +
+                                '<td class="actions-cell">' +
+                                    '<button class="action-btn btn-validate" onclick="validateOffer(\'' + tender.reference + '\')">' +
+                                        '<i class="fas fa-check"></i>' +
+                                    '</button>' +
+                                    '<button class="action-btn btn-view" onclick="viewOffer(\'' + (tender.external_url || '') + '\')">' +
+                                        '<i class="fas fa-external-link-alt"></i>' +
+                                    '</button>' +
+                                    '<button class="action-btn btn-delete" onclick="deleteOffer(\'' + tender.reference + '\')">' +
+                                        '<i class="fas fa-trash"></i>' +
+                                    '</button>' +
+                                '</td>';
+                            tbody.appendChild(row);
+                        });
+                    } else {
+                        tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="fas fa-inbox"></i><h3>Aucune offre</h3><p>Lancez le scraping pour recuperer des offres</p></div></td></tr>';
+                    }
+                    updatePagination();
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
             } finally {
                 hideLoading();
             }
         }
 
-        // Mettre à jour la pagination
         function updatePagination() {
             const pagination = document.getElementById('pagination');
-            
-            let html = `
-                <button class="pagination-btn" onclick="loadTenders(1)" ${currentPage === 1 ? 'disabled' : ''}>
-                    <i class="fas fa-angle-double-left"></i>
-                </button>
-                <button class="pagination-btn" onclick="loadTenders(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                
-                <span class="page-info">Page ${currentPage} sur ${totalPages}</span>
-                
-                <button class="pagination-btn" onclick="loadTenders(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-                <button class="pagination-btn" onclick="loadTenders(${totalPages})" ${currentPage === totalPages ? 'disabled' : ''}>
-                    <i class="fas fa-angle-double-right"></i>
-                </button>
-            `;
-            
-            pagination.innerHTML = html;
+            pagination.innerHTML =
+                '<button class="pagination-btn" onclick="loadTenders(1)" ' + (currentPage === 1 ? 'disabled' : '') + '><i class="fas fa-angle-double-left"></i></button>' +
+                '<button class="pagination-btn" onclick="loadTenders(' + (currentPage - 1) + ')" ' + (currentPage === 1 ? 'disabled' : '') + '><i class="fas fa-chevron-left"></i></button>' +
+                '<span class="page-info">Page ' + currentPage + ' / ' + totalPages + '</span>' +
+                '<button class="pagination-btn" onclick="loadTenders(' + (currentPage + 1) + ')" ' + (currentPage >= totalPages ? 'disabled' : '') + '><i class="fas fa-chevron-right"></i></button>' +
+                '<button class="pagination-btn" onclick="loadTenders(' + totalPages + ')" ' + (currentPage >= totalPages ? 'disabled' : '') + '><i class="fas fa-angle-double-right"></i></button>';
         }
 
-        // Lancer le scraping
         async function startScraping() {
             const startDate = document.getElementById('startDate').value;
             const endDate = document.getElementById('endDate').value;
-            const limit = document.getElementById('limit').value;
-            
+            const limitVal = document.getElementById('limit').value;
+
             if (!startDate || !endDate) {
-                showNotification('Veuillez sélectionner une période de dates', 'error');
+                showNotification('Selectionnez une periode', 'error');
                 return;
             }
-            
+
             const scrapeBtn = document.getElementById('scrapeBtn');
             const statusIndicator = document.getElementById('statusIndicator');
-            
+
             scrapeBtn.disabled = true;
-            scrapeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scraping en cours...';
-            statusIndicator.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Scraping en cours';
+            scrapeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scraping...';
+            statusIndicator.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> En cours';
             statusIndicator.className = 'status-indicator status-processing';
-            
-            showLoading('Scraping en cours... Cela peut prendre quelques minutes');
-            
+
+            showLoading('Scraping en cours...');
+
             try {
                 const response = await fetch('/api/scrape', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         start_date: startDate,
                         end_date: endDate,
-                        limit: limit || null
+                        limit: limitVal || 100
                     })
                 });
-                
+
                 const data = await response.json();
-                
                 if (data.success) {
                     showNotification(data.message, 'success');
-                    
-                    // Mettre à jour le tableau avec les nouvelles données
-                    if (data.offres && data.offres.offres) {
-                        loadTenders(1);
-                        loadStats();
-                    }
+                    loadTenders(1);
+                    loadStats();
                 } else {
-                    showNotification('Erreur lors du scraping: ' + (data.error || 'Erreur inconnue'), 'error');
+                    showNotification('Erreur: ' + (data.error || 'Erreur inconnue'), 'error');
                 }
             } catch (error) {
-                console.error('Erreur scraping:', error);
-                showNotification('Erreur de connexion lors du scraping', 'error');
+                showNotification('Erreur de connexion', 'error');
             } finally {
                 scrapeBtn.disabled = false;
                 scrapeBtn.innerHTML = '<i class="fas fa-play"></i> Lancer le scraping';
-                statusIndicator.innerHTML = '<i class="fas fa-check-circle"></i> Prêt';
+                statusIndicator.innerHTML = '<i class="fas fa-check-circle"></i> Pret';
                 statusIndicator.className = 'status-indicator status-idle';
                 hideLoading();
             }
         }
 
-        // Valider une offre
         async function validateOffer(reference) {
-            if (!confirm(`Valider l'offre ${reference} et l'envoyer à l'API ?`)) {
-                return;
-            }
-            
-            showLoading(`Validation de l'offre ${reference}...`);
-            
+            if (!confirm('Valider ' + reference + ' ?')) return;
+            showLoading('Validation...');
             try {
-                const response = await fetch(`/api/validate/${reference}`, {
-                    method: 'POST'
-                });
-                
+                const response = await fetch('/api/validate/' + reference, { method: 'POST' });
                 const data = await response.json();
-                
                 if (data.success) {
-                    showNotification(`Offre ${reference} validée avec succès`, 'success');
+                    showNotification('Offre validee', 'success');
                     loadTenders(currentPage);
                     loadStats();
                 } else {
-                    showNotification('Erreur lors de la validation: ' + data.error, 'error');
+                    showNotification('Erreur: ' + data.error, 'error');
                 }
             } catch (error) {
-                console.error('Erreur validation:', error);
-                showNotification('Erreur de connexion lors de la validation', 'error');
+                showNotification('Erreur', 'error');
             } finally {
                 hideLoading();
             }
         }
 
-        // Valider toutes les offres
         async function validateAll() {
-            const confirmMsg = "Etes-vous sur de vouloir valider TOUTES les offres en attente ? Cette action enverra toutes les offres a l API appeloffres.net et peut prendre plusieurs minutes.";
-            
-            if (!confirm(confirmMsg)) {
-                return;
-            }
-            
-            showLoading('Validation de toutes les offres... Cela peut prendre du temps');
-            
+            if (!confirm('Valider toutes les offres ?')) return;
+            showLoading('Validation en cours...');
             try {
-                // D'abord, récupérer toutes les offres pending
                 const response = await fetch('/api/pending?page=1&limit=1000');
                 const data = await response.json();
-                
-                if (data.success && data.pending.offres && data.pending.offres.length > 0) {
-                    let successCount = 0;
-                    let errorCount = 0;
-                    
-                    // Valider chaque offre une par une
+                if (data.success && data.pending.offres) {
+                    let success = 0, errors = 0;
                     for (const tender of data.pending.offres) {
                         try {
-                            const validateResponse = await fetch(`/api/validate/${tender.reference}`, {
-                                method: 'POST'
-                            });
-                            
-                            const validateData = await validateResponse.json();
-                            
-                            if (validateData.success) {
-                                successCount++;
-                            } else {
-                                errorCount++;
-                            }
-                            
-                            // Petit délai pour ne pas surcharger l'API
-                            await new Promise(resolve => setTimeout(resolve, 1000));
-                        } catch (err) {
-                            errorCount++;
-                        }
+                            const r = await fetch('/api/validate/' + tender.reference, { method: 'POST' });
+                            const d = await r.json();
+                            if (d.success) success++; else errors++;
+                            await new Promise(resolve => setTimeout(resolve, 500));
+                        } catch (e) { errors++; }
                     }
-                    
-                    showNotification(`Validation terminée: ${successCount} réussites, ${errorCount} échecs`, 'info');
+                    showNotification(success + ' validees, ' + errors + ' erreurs', 'info');
                     loadTenders(1);
                     loadStats();
-                } else {
-                    showNotification('Aucune offre à valider', 'info');
                 }
             } catch (error) {
-                console.error('Erreur validation multiple:', error);
-                showNotification('Erreur lors de la validation multiple', 'error');
+                showNotification('Erreur', 'error');
             } finally {
                 hideLoading();
             }
         }
 
-        // Supprimer une offre
         async function deleteOffer(reference) {
-            if (!confirm(`Supprimer définitivement l'offre ${reference} ?`)) {
-                return;
-            }
-            
+            if (!confirm('Supprimer ' + reference + ' ?')) return;
             try {
-                const response = await fetch(`/api/delete/${reference}`, {
-                    method: 'DELETE'
-                });
-                
+                const response = await fetch('/api/delete/' + reference, { method: 'DELETE' });
                 const data = await response.json();
-                
                 if (data.success) {
-                    showNotification(`Offre ${reference} supprimée`, 'success');
+                    showNotification('Offre supprimee', 'success');
                     loadTenders(currentPage);
                     loadStats();
                 } else {
-                    showNotification('Erreur lors de la suppression: ' + data.error, 'error');
+                    showNotification('Erreur', 'error');
                 }
             } catch (error) {
-                console.error('Erreur suppression:', error);
-                showNotification('Erreur de connexion lors de la suppression', 'error');
+                showNotification('Erreur', 'error');
             }
         }
 
-        // Supprimer toutes les offres
         async function deleteAll() {
-            if (!confirm("Etes-vous ABSOLUMENT sur de vouloir supprimer TOUTES les offres en attente ? Cette action est IRREVERSIBLE !")) {
-                return;
-            }
-            
-            showLoading('Suppression de toutes les offres...');
-            
+            if (!confirm('Supprimer TOUTES les offres ? Cette action est irreversible.')) return;
+            showLoading('Suppression...');
             try {
-                const response = await fetch('/api/delete_all', {
-                    method: 'DELETE'
-                });
-                
+                const response = await fetch('/api/delete_all', { method: 'DELETE' });
                 const data = await response.json();
-                
                 if (data.success) {
-                    showNotification(`${data.count} offres supprimées`, 'success');
+                    showNotification(data.count + ' offres supprimees', 'success');
                     loadTenders(1);
                     loadStats();
                 } else {
-                    showNotification('Erreur lors de la suppression: ' + data.error, 'error');
+                    showNotification('Erreur', 'error');
                 }
             } catch (error) {
-                console.error('Erreur suppression multiple:', error);
-                showNotification('Erreur de connexion lors de la suppression', 'error');
+                showNotification('Erreur', 'error');
             } finally {
                 hideLoading();
             }
         }
 
-        // Voir une offre (ouvrir dans un nouvel onglet)
         function viewOffer(url) {
             if (url && url.startsWith('http')) {
                 window.open(url, '_blank');
@@ -1010,45 +957,14 @@
             }
         }
 
-        // Vérifier le statut du scraping
-        async function checkStatus() {
-            try {
-                const response = await fetch('/api/status');
-                const data = await response.json();
-                
-                const statusIndicator = document.getElementById('statusIndicator');
-                const scrapeBtn = document.getElementById('scrapeBtn');
-                
-                if (data.processing) {
-                    statusIndicator.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Scraping en cours';
-                    statusIndicator.className = 'status-indicator status-processing';
-                    scrapeBtn.disabled = true;
-                } else {
-                    statusIndicator.innerHTML = '<i class="fas fa-check-circle"></i> Prêt';
-                    statusIndicator.className = 'status-indicator status-idle';
-                    scrapeBtn.disabled = false;
-                }
-            } catch (error) {
-                console.error('Erreur vérification statut:', error);
-            }
-        }
-
-        // Charger au démarrage
         document.addEventListener('DOMContentLoaded', function() {
-            // Définir les dates par défaut (30 derniers jours)
             const today = new Date();
-            const oneMonthAgo = new Date();
-            oneMonthAgo.setDate(today.getDate() - 30);
-            
-            document.getElementById('startDate').value = oneMonthAgo.toISOString().split('T')[0];
+            const ago = new Date();
+            ago.setDate(today.getDate() - 7);
+            document.getElementById('startDate').value = ago.toISOString().split('T')[0];
             document.getElementById('endDate').value = today.toISOString().split('T')[0];
-            
-            // Charger les données
             loadStats();
             loadTenders(1);
-            
-            // Vérifier le statut périodiquement
-            setInterval(checkStatus, 5000);
         });
     </script>
 </body>
