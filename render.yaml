@@ -1,12 +1,13 @@
 services:
   - type: web
     name: boamp-scraper
-    env: python
+    runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    startCommand: gunicorn app:app
+    plan: free
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.0
+        value: "3.11.0"
       - key: MONGO_URI
         sync: false
       - key: MONGO_DB
