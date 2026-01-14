@@ -69,15 +69,23 @@ logger = logging.getLogger(__name__)
 # MONGODB FUNCTIONS
 # ================================================
 
+# Client MongoDB global (connexion persistante)
+_mongo_client = None
+
 def get_mongo_client():
-    """Retourne un client MongoDB"""
-    return MongoClient(
-        MONGO_URI,
-        tls=True,
-        tlsAllowInvalidCertificates=True,
-        serverSelectionTimeoutMS=30000,
-        connectTimeoutMS=30000
-    )
+    """Retourne un client MongoDB (connexion unique reutilisee)"""
+    global _mongo_client
+    if _mongo_client is None:
+        _mongo_client = MongoClient(
+            MONGO_URI,
+            tls=True,
+            tlsAllowInvalidCertificates=True,
+            serverSelectionTimeoutMS=10000,
+            connectTimeoutMS=10000,
+            socketTimeoutMS=10000,
+            maxPoolSize=1
+        )
+    return _mongo_client
 
 def get_mongo_collection():
     """Retourne la collection MongoDB"""
@@ -260,14 +268,14 @@ class BOAMPScraper:
         logger.info("✅ BOAMP Scraper initialisé avec MongoDB")
 
     def scrape(self, start_date=None, end_date=None, limit=None, offset_start=0):
-        """Scrape BOAMP via API officielle - par lots de 10 pour eviter timeout"""
+        """Scrape BOAMP via API officielle - par lots de 5 pour eviter timeout Render"""
         self.is_processing = True
         new_count = 0
         offset = offset_start
-        batch_size = 10
+        batch_size = 5
         total_fetched = 0
         max_pages = 1
-        max_offers = 10
+        max_offers = 5
 
         try:
             start_date_obj = datetime.strptime(start_date, '%Y-%m-%d').date() if start_date else None
@@ -298,7 +306,7 @@ class BOAMPScraper:
                     params["where"] = " AND ".join(where_clauses)
 
                 logger.info(f"📡 Page {page_count} - offset: {offset}")
-                response = self.session.get(self.api_url, params=params, timeout=30)
+                response = self.session.get(self.api_url, params=params, timeout=15)
                 response.raise_for_status()
 
                 try:
@@ -391,7 +399,6 @@ class BOAMPScraper:
                     break
 
                 offset += batch_size
-                time.sleep(0.5)
 
             result = {
                 "success": True,
@@ -1426,7 +1433,7 @@ def create_interface_files():
 
             <div class="actions">
                 <button class="btn btn-primary" onclick="startScraping()" id="scrapeBtn">
-                    <i class="fas fa-play"></i> Lancer le scraping
+                    <i class="fas fa-download"></i> Extraire 5 offres
                 </button>
                 
                 <div id="statusIndicator" class="status-indicator status-idle">

@@ -649,14 +649,14 @@
                     <input type="date" id="endDate" value="{{ end_date }}">
                 </div>
                 <button class="btn btn-primary" onclick="startScraping()" id="scrapeBtn">
-                    <i class="fas fa-download"></i> Extraire 10 offres
+                    <i class="fas fa-download"></i> Extraire 5 offres
                 </button>
                 <div id="statusIndicator" class="status-indicator status-idle">
                     <i class="fas fa-check-circle"></i> Pret
                 </div>
             </div>
             <div id="scrapeInfo" style="margin-top: 15px; font-size: 13px; color: #6c757d;">
-                Cliquez plusieurs fois pour extraire plus d'offres (10 par clic)
+                Cliquez plusieurs fois pour extraire plus d'offres (5 par clic)
             </div>
 
             <div class="actions-row">
@@ -853,7 +853,7 @@
                 showNotification('Erreur - Reessayez', 'error');
             } finally {
                 scrapeBtn.disabled = false;
-                scrapeBtn.innerHTML = '<i class="fas fa-download"></i> Extraire 10 offres';
+                scrapeBtn.innerHTML = '<i class="fas fa-download"></i> Extraire 5 offres';
                 statusIndicator.innerHTML = '<i class="fas fa-check-circle"></i> Pret';
                 statusIndicator.className = 'status-indicator status-idle';
             }
