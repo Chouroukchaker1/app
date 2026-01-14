@@ -268,14 +268,14 @@ class BOAMPScraper:
         logger.info("✅ BOAMP Scraper initialisé avec MongoDB")
 
     def scrape(self, start_date=None, end_date=None, limit=None, offset_start=0):
-        """Scrape BOAMP via API officielle - par lots de 5 pour eviter timeout Render"""
+        """Scrape BOAMP via API officielle - parcourt rapidement les pages pour trouver les nouvelles offres"""
         self.is_processing = True
         new_count = 0
         offset = offset_start
-        batch_size = 5
+        batch_size = 100  # Gros lots pour parcourir vite
         total_fetched = 0
-        max_pages = 1
-        max_offers = 5
+        max_pages = 50  # Parcourir jusqu'a 50 pages (5000 offres)
+        max_new_offers = 20  # S'arreter apres avoir trouve 20 nouvelles offres
 
         try:
             start_date_obj = datetime.strptime(start_date, '%Y-%m-%d').date() if start_date else None
@@ -286,6 +286,7 @@ class BOAMPScraper:
             page_count = 0
             offers_in_range = 0
             stop_scraping = False
+            consecutive_no_new = 0  # Compteur de pages sans nouvelles offres
 
             while page_count < max_pages and not stop_scraping:
                 page_count += 1
@@ -306,7 +307,7 @@ class BOAMPScraper:
                     params["where"] = " AND ".join(where_clauses)
 
                 logger.info(f"📡 Page {page_count} - offset: {offset}")
-                response = self.session.get(self.api_url, params=params, timeout=15)
+                response = self.session.get(self.api_url, params=params, timeout=20)
                 response.raise_for_status()
 
                 try:
@@ -324,6 +325,7 @@ class BOAMPScraper:
                 logger.info(f"📊 Page {page_count}: {len(records)} annonces récupérées")
 
                 page_in_range_count = 0
+                page_new_count = 0  # Nouvelles offres sur cette page
                 for record in records:
                     try:
                         date_pub_str = record.get('dateparution', '')
@@ -382,21 +384,31 @@ class BOAMPScraper:
 
                         if insert_tender(tender_data):
                             new_count += 1
+                            page_new_count += 1
                             logger.info(f"✅ Nouvelle offre: {ref}")
 
                     except Exception as e:
                         logger.error(f"Erreur traitement annonce: {e}")
                         continue
 
-                logger.info(f"📋 Page {page_count}: {page_in_range_count} offres dans la plage")
+                logger.info(f"📋 Page {page_count}: {page_in_range_count} offres dans la plage, {page_new_count} nouvelles")
 
                 if stop_scraping:
                     logger.info("🛑 Arrêt: offres hors plage de dates")
                     break
 
-                if new_count >= max_offers:
-                    logger.info(f"✅ Limite atteinte ({new_count}/{max_offers})")
+                if new_count >= max_new_offers:
+                    logger.info(f"✅ Limite de nouvelles offres atteinte ({new_count}/{max_new_offers})")
                     break
+
+                # Si 3 pages consecutives sans nouvelles offres, arreter
+                if page_new_count == 0:
+                    consecutive_no_new += 1
+                    if consecutive_no_new >= 3:
+                        logger.info("🛑 Arrêt: 3 pages sans nouvelles offres")
+                        break
+                else:
+                    consecutive_no_new = 0
 
                 offset += batch_size
 
@@ -1433,7 +1445,7 @@ def create_interface_files():
 
             <div class="actions">
                 <button class="btn btn-primary" onclick="startScraping()" id="scrapeBtn">
-                    <i class="fas fa-download"></i> Extraire 5 offres
+                    <i class="fas fa-download"></i> Chercher nouvelles offres
                 </button>
                 
                 <div id="statusIndicator" class="status-indicator status-idle">
