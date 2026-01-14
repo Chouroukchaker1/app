@@ -268,14 +268,14 @@ class BOAMPScraper:
         logger.info("✅ BOAMP Scraper initialisé avec MongoDB")
 
     def scrape(self, start_date=None, end_date=None, limit=None, offset_start=0):
-        """Scrape BOAMP via API officielle - parcourt rapidement les pages pour trouver les nouvelles offres"""
+        """Scrape BOAMP via API officielle - extrait jusqu'a 200 offres"""
         self.is_processing = True
         new_count = 0
         offset = offset_start
-        batch_size = 100  # Gros lots pour parcourir vite
+        batch_size = 100  # 100 offres par requete
         total_fetched = 0
-        max_pages = 50  # Parcourir jusqu'a 50 pages (5000 offres)
-        max_new_offers = 20  # S'arreter apres avoir trouve 20 nouvelles offres
+        max_pages = 100  # Parcourir jusqu'a 100 pages
+        max_new_offers = 200  # Maximum 200 nouvelles offres
 
         try:
             start_date_obj = datetime.strptime(start_date, '%Y-%m-%d').date() if start_date else None
@@ -401,11 +401,11 @@ class BOAMPScraper:
                     logger.info(f"✅ Limite de nouvelles offres atteinte ({new_count}/{max_new_offers})")
                     break
 
-                # Si 3 pages consecutives sans nouvelles offres, arreter
+                # Si 5 pages consecutives sans nouvelles offres, arreter
                 if page_new_count == 0:
                     consecutive_no_new += 1
-                    if consecutive_no_new >= 3:
-                        logger.info("🛑 Arrêt: 3 pages sans nouvelles offres")
+                    if consecutive_no_new >= 5:
+                        logger.info("🛑 Arrêt: 5 pages sans nouvelles offres")
                         break
                 else:
                     consecutive_no_new = 0
