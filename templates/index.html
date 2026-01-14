@@ -648,16 +648,15 @@
                     <label for="endDate">Date de fin</label>
                     <input type="date" id="endDate" value="{{ end_date }}">
                 </div>
-                <div class="form-group">
-                    <label for="limit">Limite d'offres</label>
-                    <input type="number" id="limit" placeholder="100" min="1" value="100">
-                </div>
                 <button class="btn btn-primary" onclick="startScraping()" id="scrapeBtn">
-                    <i class="fas fa-play"></i> Lancer le scraping
+                    <i class="fas fa-download"></i> Extraire 10 offres
                 </button>
                 <div id="statusIndicator" class="status-indicator status-idle">
                     <i class="fas fa-check-circle"></i> Pret
                 </div>
+            </div>
+            <div id="scrapeInfo" style="margin-top: 15px; font-size: 13px; color: #6c757d;">
+                Cliquez plusieurs fois pour extraire plus d'offres (10 par clic)
             </div>
 
             <div class="actions-row">
@@ -818,7 +817,6 @@
         async function startScraping() {
             const startDate = document.getElementById('startDate').value;
             const endDate = document.getElementById('endDate').value;
-            const limitVal = document.getElementById('limit').value;
 
             if (!startDate || !endDate) {
                 showNotification('Selectionnez une periode', 'error');
@@ -829,11 +827,9 @@
             const statusIndicator = document.getElementById('statusIndicator');
 
             scrapeBtn.disabled = true;
-            scrapeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scraping...';
+            scrapeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Extraction...';
             statusIndicator.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> En cours';
             statusIndicator.className = 'status-indicator status-processing';
-
-            showLoading('Scraping en cours...');
 
             try {
                 const response = await fetch('/api/scrape', {
@@ -841,8 +837,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         start_date: startDate,
-                        end_date: endDate,
-                        limit: limitVal || 100
+                        end_date: endDate
                     })
                 });
 
@@ -855,13 +850,12 @@
                     showNotification('Erreur: ' + (data.error || 'Erreur inconnue'), 'error');
                 }
             } catch (error) {
-                showNotification('Erreur de connexion', 'error');
+                showNotification('Erreur - Reessayez', 'error');
             } finally {
                 scrapeBtn.disabled = false;
-                scrapeBtn.innerHTML = '<i class="fas fa-play"></i> Lancer le scraping';
+                scrapeBtn.innerHTML = '<i class="fas fa-download"></i> Extraire 10 offres';
                 statusIndicator.innerHTML = '<i class="fas fa-check-circle"></i> Pret';
                 statusIndicator.className = 'status-indicator status-idle';
-                hideLoading();
             }
         }
 

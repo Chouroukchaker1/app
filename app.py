@@ -259,15 +259,15 @@ class BOAMPScraper:
         ensure_indexes()
         logger.info("✅ BOAMP Scraper initialisé avec MongoDB")
 
-    def scrape(self, start_date=None, end_date=None, limit=None):
-        """Scrape BOAMP via API officielle"""
+    def scrape(self, start_date=None, end_date=None, limit=None, offset_start=0):
+        """Scrape BOAMP via API officielle - par lots de 10 pour eviter timeout"""
         self.is_processing = True
         new_count = 0
-        offset = 0
-        batch_size = 50
+        offset = offset_start
+        batch_size = 10
         total_fetched = 0
-        max_pages = 5
-        max_offers = int(limit) if limit else 100
+        max_pages = 1
+        max_offers = 10
 
         try:
             start_date_obj = datetime.strptime(start_date, '%Y-%m-%d').date() if start_date else None
